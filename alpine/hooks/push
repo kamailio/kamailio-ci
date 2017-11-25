@@ -5,6 +5,12 @@ IMAGE_NAME="${IMAGE_NAME:-kamailio:master-alpine}"
 set -x
 docker tag $IMAGE_NAME $DOCKER_REPO:$SOURCE_BRANCH-alpine \
     && docker tag $IMAGE_NAME.debug $DOCKER_REPO:$SOURCE_BRANCH-alpine.debug \
+    && docker tag $IMAGE_NAME $DOCKER_REPO:$SOURCE_BRANCH \
+    && docker tag $IMAGE_NAME.debug $DOCKER_REPO:$SOURCE_BRANCH.debug \
+    && docker push $IMAGE_NAME \
+    && docker push $IMAGE_NAME.debug \
+    && docker push $DOCKER_REPO:$SOURCE_BRANCH \
+    && docker push $DOCKER_REPO:$SOURCE_BRANCH.debug \
     && docker push $DOCKER_REPO:$SOURCE_BRANCH-alpine \
     && docker push $DOCKER_REPO:$SOURCE_BRANCH-alpine.debug
 
