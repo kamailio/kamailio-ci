@@ -1,6 +1,6 @@
 #!/bin/bash
 
-IMAGE_NAME="${IMAGE_NAME:-kamailio:master-alpine}"
+IMAGE_NAME="${IMAGE_NAME:-kamailio:master}"
 
 init_local_repo() {
     docker network create kamailio-build
@@ -8,16 +8,21 @@ init_local_repo() {
 }
 
 build_images() {
+    mv kamailio_min.tar.gz.without_os_files kamailio_min-without_os_files.tar.gz
     docker build --no-cache -t $IMAGE_NAME .
-    docker build --no-cache -t $IMAGE_NAME.debug --network kamailio-build -f Dockerfile.debug .
+    docker build --no-cache -t $IMAGE_NAME-alpine -f Dockerfile.alpine .
+    docker build --no-cache -t $IMAGE_NAME-alpine.debug --network kamailio-build -f Dockerfile.debug .
 }
 
 build_cleanup() {
     docker stop local-repo
     docker rm local-repo
     docker network rm kamailio-build
-    rm -Rf apk_files
+    rm -Rf apk_files kamailio_img.tar.gz kamailio_min-without_os_files.tar.gz
 }
+
+set -x
+set -e
 
 init_local_repo
 build_images

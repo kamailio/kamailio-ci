@@ -4,9 +4,9 @@ IMAGE_NAME="${IMAGE_NAME:-kamailio:master-alpine}"
 
 set -x
 docker rmi $IMAGE_NAME
-docker rmi $IMAGE_NAME.debug
+docker rmi $IMAGE_NAME-alpine
+docker rmi $IMAGE_NAME-alpine.debug
 docker rmi $DOCKER_REPO:$SOURCE_BRANCH
-docker rmi $DOCKER_REPO:$SOURCE_BRANCH.debug
 docker rmi $DOCKER_REPO:$SOURCE_BRANCH-alpine
 docker rmi $DOCKER_REPO:$SOURCE_BRANCH-alpine.debug
 exit 0
