@@ -6,7 +6,12 @@ BUILD_ROOT=/tmp/kamailio
 FILELIST=/tmp/filelist
 FILELIST_BINARY=/tmp/filelist_binary
 TMP_TAR=/tmp/kamailio_min.tar.gz
+OS_FILELIST=/tmp/os_filelist
 IMG_TAR=kamailio_img.tar.gz
+
+prepare_os_filelist() {
+    find /  \( -path /etc -o -path /dev -o -path /home -o -path /media -o -path /proc -o -path /mnt -o -path /root -o -path /sys -o -path /tmp -o -path /run \) -prune  -o -print
+}
 
 prepare_build() {
 apk add --no-cache abuild git gcc build-base bison db-dev gawk flex expat-dev perl-dev postgresql-dev python2-dev pcre-dev mariadb-dev \
@@ -59,6 +64,7 @@ extra_files() {
 /bin/busybox
 /usr/bin
 /usr/bin/awk
+/usr/bin/gawk
 /usr/bin/dumpcap
 /usr/lib
 /usr/sbin
@@ -115,12 +121,34 @@ find_binaries() {
     mv -f $FILELIST_BINARY.new $FILELIST_BINARY
 }
 
+filter_os_files() {
+    local TARLIST=$1
+    set +e
+    for f in $(cat $TARLIST)
+    do
+        grep -q "$f" $OS_FILELIST
+        if [ $? -ne 0 ]; then
+           echo $f
+        fi
+    done
+    set -e
+}
+
 tar_files() {
     local TARLIST=/tmp/tarlist
     cat $FILELIST > $TARLIST
     cat $FILELIST_BINARY >> $TARLIST
+    filter_os_files $TARLIST > $TARLIST.without_os_files
+
+    # awk symbolink link need to point to gawk
+    echo /usr/bin/awk >> $TARLIST.without_os_files
+
     tar -czf $TMP_TAR --no-recursion -T $TARLIST
-    rm -f $TARLIST
+    tar -czf $TMP_TAR.without_os_files --no-recursion -T $TARLIST.without_os_files
+    rm -f $TARLIST $TARLIST.without_os_files
+
+    # copy tar archive wuthout os files to result dir
+    cp $TMP_TAR.without_os_files /usr/src/kamailio/pkg/docker/alpine/
 }
 
 make_image_tar() {
@@ -135,6 +163,7 @@ create_apk_dir() {
     mv /home/build/packages/kamailio /usr/src/kamailio/pkg/docker/alpine/apk_files
 }
 
+prepare_os_filelist > $OS_FILELIST
 prepare_build
 build_and_install
 #install PCAP tools
