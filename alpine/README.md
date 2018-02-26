@@ -6,6 +6,8 @@
 
 -	`master`, `master-alpine`, `master-alpine.debug`
 -	`latest`, `5.1`, `latest-alpine`,`5.1-alpine`, `latest-alpine.debug`, `5.1-alpine.debug`
+-	`5.1.2`, `5.1.2-alpine`, `5.1.2-alpine.debug`
+-	`5.1.1`, `5.1.1-alpine`, `5.1.1-alpine.debug`
 -	`5.1.0`, `5.1.0-alpine`, `5.1.0-alpine.debug`
 
 Tags `master`, `latest` and `5.1` based on alpine image with removed all libs except libc, busybox, tcpdump, dumpcap, gawk, kamailio and dependent libs.
