@@ -49,7 +49,7 @@ list_installed_kamailio_packages() {
 kamailio_files() {
     local PACKAGES
     PACKAGES=$(apk info | grep kamailio)
-    PACKAGES="musl $PACKAGES"
+    PACKAGES="musl ca-certificates $PACKAGES"
     for pkg in $PACKAGES
     do
         # list package files and filter package name
@@ -60,6 +60,9 @@ kamailio_files() {
 extra_files() {
     cat << EOF
 /etc
+/etc/ssl
+/etc/ssl/certs
+/etc/ssl/certs/*
 /bin
 /bin/busybox
 /usr/bin
@@ -143,7 +146,7 @@ tar_files() {
     # awk symbolink link need to point to gawk
     echo /usr/bin/awk >> $TARLIST.without_os_files
 
-    tar -czf $TMP_TAR --no-recursion -T $TARLIST
+    tar -czf $TMP_TAR --no-recursion $(cat $TARLIST)
     tar -czf $TMP_TAR.without_os_files --no-recursion -T $TARLIST.without_os_files
     rm -f $TARLIST $TARLIST.without_os_files
 
