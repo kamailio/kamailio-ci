@@ -28,16 +28,9 @@ apk add --no-cache abuild git gcc build-base bison db-dev gawk flex expat-dev pe
 
 build_and_install(){
     cd /usr/src/kamailio
-    REPO_OWNER=$(git remote get-url origin 2> /dev/null | sed -e 's|^.*github.com/||' -e 's|^git@github.com:||' -e 's|/.*\.git||')
-    GIT_TAG=$(git rev-parse HEAD 2> /dev/null)
-    if [ ! -z "$REPO_OWNER" ]; then
-        sed -i -e "s:github.com/kamailio:github.com/$REPO_OWNER:" /usr/src/kamailio/pkg/kamailio/alpine/APKBUILD
-    fi
-    if [ ! -z "$GIT_TAG" ]; then
-        sed -i -e "s/^_gitcommit=.*/_gitcommit=$GIT_TAG/" /usr/src/kamailio/pkg/kamailio/alpine/APKBUILD
-    fi
     chown -R build /usr/src/kamailio
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio/alpine; abuild snapshot"
+    su - build -c "cd /usr/src/kamailio/pkg/kamailio; make cfg"
+    su - build -c "cd /usr/src/kamailio/pkg/kamailio; make apk"
     su - build -c "cd /usr/src/kamailio/pkg/kamailio/alpine; abuild -r"
     cd /home/build/packages/kamailio/x86_64
     ls -1 kamailio-*.apk |  xargs apk --no-cache --allow-untrusted add
