@@ -6,6 +6,12 @@ if [ ! -z "$SOURCE_BRANCH" ];then
     ENV_OPT="-e SOURCE_BRANCH=$SOURCE_BRANCH"
 fi
 
-docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:latest
+if [ "$SOURCE_BRANCH" = "master" ];then
+    sed -i -e 's/latest$/edge/' Dockerfile.alpine
+    sed -i -e 's/latest$/edge/' Dockerfile.debug
+    docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:edge
+else
+    docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:latest
+fi
 
 exit $?
