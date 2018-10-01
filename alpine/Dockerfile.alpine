@@ -1,4 +1,4 @@
-FROM alpine:edge
+FROM alpine:latest
 
 ADD kamailio_min-without_os_files.tar.gz /
 
