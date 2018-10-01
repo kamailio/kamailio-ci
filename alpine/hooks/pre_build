@@ -6,6 +6,6 @@ if [ ! -z "$SOURCE_BRANCH" ];then
     ENV_OPT="-e SOURCE_BRANCH=$SOURCE_BRANCH"
 fi
 
-docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:edge
+docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:latest
 
 exit $?
