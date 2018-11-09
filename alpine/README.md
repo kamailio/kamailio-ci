@@ -5,7 +5,11 @@
 # Supported tags
 
 -	`master`, `master-alpine`, `master-alpine.debug`
--	`latest`, `5.1`, `latest-alpine`,`5.1-alpine`, `latest-alpine.debug`, `5.1-alpine.debug`
+-	`latest`, `latest-alpine`, `latest-alpine.debug`
+-	`5.2`, `5.2-alpine`, `5.2-alpine.debug`
+-	`5.1`, `5.1-alpine`, `5.1-alpine.debug`
+-	`5.2.0`, `5.2.0-alpine`, `5.2.0-alpine.debug`
+-	`5.1.6`, `5.1.6-alpine`, `5.1.6-alpine.debug`
 -	`5.1.5`, `5.1.5-alpine`, `5.1.5-alpine.debug`
 -	`5.1.4`, `5.1.4-alpine`, `5.1.4-alpine.debug`
 -	`5.1.3`, `5.1.3-alpine`, `5.1.3-alpine.debug`
@@ -13,7 +17,7 @@
 -	`5.1.1`, `5.1.1-alpine`, `5.1.1-alpine.debug`
 -	`5.1.0`, `5.1.0-alpine`, `5.1.0-alpine.debug`
 
-Tags `master`, `latest` and `5.1` based on alpine image with removed all libs except libc, busybox, tcpdump, dumpcap, gawk, kamailio and dependent libs.
+Tags `master`, `latest`, `5.2` and `5.1` based on alpine image with removed all libs except libc, busybox, tcpdump, dumpcap, gawk, kamailio and dependent libs.
 
 Tags that contains `-alpine` keyword based on alpine image. All OS tools is untouched and possible to use `apk` utility.
 
