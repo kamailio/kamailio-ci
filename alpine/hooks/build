@@ -4,7 +4,14 @@ IMAGE_NAME="${IMAGE_NAME:-kamailio:master}"
 
 init_local_repo() {
     docker network create kamailio-build
-    docker run --network kamailio-build --name local-repo --hostname local-repo --volume=`pwd`/apk_files:/usr/share/nginx/html:ro -d nginx
+    docker run \
+           --detach \
+           --network kamailio-build \
+           --name local-repo \
+           --hostname local-repo \
+           --rm=true \
+           --volume=`pwd`/apk_files:/usr/share/nginx/html:ro \
+           nginx
 }
 
 build_images() {
@@ -16,7 +23,6 @@ build_images() {
 
 build_cleanup() {
     docker stop local-repo
-    docker rm local-repo
     docker network rm kamailio-build
     rm -Rf apk_files kamailio_img.tar.gz kamailio_min-without_os_files.tar.gz
 }

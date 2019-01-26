@@ -1,17 +1,40 @@
 #!/bin/bash -e
 
-echo "=> Build Kamailio source code"
+set -x
+# Setting environment vars
+ALPINE_BRANCH="${ALPINE_BRANCH:-latest}"
 
-if [ ! -z "$SOURCE_BRANCH" ];then
-    ENV_OPT="-e SOURCE_BRANCH=$SOURCE_BRANCH"
+if [ "$SOURCE_BRANCH" = "master" ];then
+    ALPINE_BRANCH="edge"
 fi
+
+refresh_builder() {
+    docker pull alpine:${ALPINE_BRANCH} || true
+    docker pull kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH} || true
+    local SHA_ALPINE=$(docker image inspect -f '{{index .RootFS.Layers 0}}' alpine:${ALPINE_BRANCH})
+    local SHA_BUILDER=$(docker image inspect -f '{{index .RootFS.Layers 0}}' kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH})
+    if [ "${SHA_ALPINE}" = "${SHA_BUILDER}" ]; then
+      echo "Builder already use fresh alpine base image. Continue"
+      return 0
+    fi
+    sed -i -e "s/alpine:latest/alpine:${ALPINE_BRANCH}/" Dockerfile.builder
+    docker build -t kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH} --file Dockerfile.builder .
+    docker push kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH}
+}
+
+echo "=> Refreshing builder image"
+refresh_builder
+
+echo "=> Build Kamailio source code"
 
 if [ "$SOURCE_BRANCH" = "master" ];then
     sed -i -e 's/latest$/edge/' Dockerfile.alpine
     sed -i -e 's/latest$/edge/' Dockerfile.debug
-    docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:edge
-else
-    docker run --volume=`pwd`/../../..:/usr/src/kamailio --volume=`pwd`/build.sh:/build.sh --entrypoint=/build.sh $ENV_OPT alpine:latest
 fi
+
+docker run --volume=`pwd`/../../..:/usr/src/kamailio \
+           --volume=`pwd`/build.sh:/build.sh \
+           --entrypoint=/build.sh \
+           kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH}
 
 exit $?

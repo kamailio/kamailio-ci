@@ -9,23 +9,6 @@ TMP_TAR=/tmp/kamailio_min.tar.gz
 OS_FILELIST=/tmp/os_filelist
 IMG_TAR=kamailio_img.tar.gz
 
-prepare_os_filelist() {
-    find /  \( -path /etc -o -path /dev -o -path /home -o -path /media -o -path /proc -o -path /mnt -o -path /root -o -path /sys -o -path /tmp -o -path /run \) -prune  -o -print
-}
-
-prepare_build() {
-apk add --no-cache abuild git gcc build-base bison db-dev gawk flex expat-dev perl-dev postgresql-dev python2-dev pcre-dev mariadb-dev \
-    libxml2-dev curl-dev unixodbc-dev confuse-dev ncurses-dev sqlite-dev lua-dev openldap-dev \
-    openssl-dev net-snmp-dev libuuid libev-dev jansson-dev json-c-dev libevent-dev linux-headers \
-    libmemcached-dev rabbitmq-c-dev hiredis-dev libmaxminddb-dev libunistring-dev freeradius-client-dev lksctp-tools-dev ruby-dev
-
-    adduser -D build && addgroup build abuild
-    echo "%abuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/abuild
-    su - build -c "git config --global user.name 'Your Full Name'"
-    su - build -c "git config --global user.email 'your@email.address'"
-    su - build -c "abuild-keygen -a -i"
-}
-
 build_and_install(){
     cd /usr/src/kamailio
     chown -R build /usr/src/kamailio
@@ -42,7 +25,7 @@ list_installed_kamailio_packages() {
 
 kamailio_files() {
     local PACKAGES
-    PACKAGES=$(apk info | grep kamailio)
+    PACKAGES=$(list_installed_kamailio_packages)
     PACKAGES="musl ca-certificates $PACKAGES"
     for pkg in $PACKAGES
     do
@@ -160,11 +143,7 @@ create_apk_dir() {
     mv /home/build/packages/kamailio /usr/src/kamailio/pkg/docker/alpine/apk_files
 }
 
-prepare_os_filelist > $OS_FILELIST
-prepare_build
 build_and_install
-#install PCAP tools
-apk add --no-cache wireshark-common tcpdump
 
 kamailio_files > $FILELIST
 extra_files >> $FILELIST
