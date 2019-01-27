@@ -8,6 +8,7 @@
 -	`latest`, `latest-alpine`, `latest-alpine.debug`
 -	`5.2`, `5.2-alpine`, `5.2-alpine.debug`
 -	`5.1`, `5.1-alpine`, `5.1-alpine.debug`
+-	`5.2.1`, `5.2.1-alpine`, `5.2.1-alpine.debug`
 -	`5.2.0`, `5.2.0-alpine`, `5.2.0-alpine.debug`
 -	`5.1.6`, `5.1.6-alpine`, `5.1.6-alpine.debug`
 -	`5.1.5`, `5.1.5-alpine`, `5.1.5-alpine.debug`
