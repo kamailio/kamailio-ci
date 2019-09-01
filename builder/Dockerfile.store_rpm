@@ -1,0 +1,25 @@
+ARG builder_tag="fedora-30"
+
+FROM safarov/kamailio-builder:${builder_tag} AS builder
+ARG builder_tag
+
+COPY kamailio-*.src.rpm /
+
+RUN set -e; \
+    set -x; \
+    rpm -i kamailio-*.src.rpm; \
+    if [ -d /usr/src/packages ]; then ln -s /usr/src/packages ~/rpmbuild; fi; \
+    TEST_DIST_MACRO=$(rpm --eval '%{dist}'); \
+    if [ "${TEST_DIST_MACRO}" == "%{dist}" ]; then sed -i -e '1 i\%define dist .1' ~/rpmbuild/SPECS/kamailio.spec; fi; \
+    rpmbuild -ba --clean ${EXTRA_ARGS} ~/rpmbuild/SPECS/kamailio.spec; \
+    mkdir -p /repos/${builder_tag}/kamailio; \
+    find -L ~/rpmbuild; \
+    mv ~/rpmbuild/RPMS /repos/${builder_tag}/kamailio; \
+    mv ~/rpmbuild/SRPMS /repos/${builder_tag}/kamailio; \
+    if [ -d /deps ]; then cp -R /deps /repos/${builder_tag}/; fi; \
+    rm -Rf ~/rpmbuild
+
+FROM scratch
+ARG builder_tag
+
+COPY --from=builder /repos/${builder_tag} /rpms/${builder_tag}/
