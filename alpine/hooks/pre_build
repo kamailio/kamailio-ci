@@ -4,7 +4,7 @@ set -x
 # Setting environment vars
 ALPINE_BRANCH="${ALPINE_BRANCH:-latest}"
 
-if [ "$SOURCE_BRANCH" = "master" ];then
+if [ "$SOURCE_BRANCH" = "master" -o "$SOURCE_BRANCH" = "5.3" ];then
     ALPINE_BRANCH="edge"
 fi
 
