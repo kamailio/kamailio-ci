@@ -13,6 +13,7 @@
 -	`5.2.2`, `5.2.2-alpine`, `5.2.2-alpine.debug`
 -	`5.2.1`, `5.2.1-alpine`, `5.2.1-alpine.debug`
 -	`5.2.0`, `5.2.0-alpine`, `5.2.0-alpine.debug`
+-	`5.1.9`, `5.1.9-alpine`, `5.1.9-alpine.debug`
 -	`5.1.8`, `5.1.8-alpine`, `5.1.8-alpine.debug`
 -	`5.1.7`, `5.1.7-alpine`, `5.1.7-alpine.debug`
 -	`5.1.6`, `5.1.6-alpine`, `5.1.6-alpine.debug`
