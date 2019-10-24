@@ -67,6 +67,22 @@ steps:
       condition:
         all:
           is_old_builder: match("${{base_image}}", "fedora", true)
+  centos_8:
+    type: build
+    title: Build CentOS 8 RPMs and store to docker image
+    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
+    tag: centos-8.amd64
+    working_directory: ${{CF_VOLUME_PATH}}
+    dockerfile: Dockerfile.store_rpm
+    build_arguments:
+      - builder_tag=centos-8
+    no_cache: true
+    no_cf_cache: true
+    fail_fast: false
+    when:
+      condition:
+        all:
+          is_old_builder: match("${{base_image}}", "centos", true)
   centos_6:
     type: build
     title: Build CentOS 6 RPMs and store to docker image
@@ -92,22 +108,6 @@ steps:
     dockerfile: Dockerfile.store_rpm
     build_arguments:
       - builder_tag=centos-7
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_old_builder: match("${{base_image}}", "centos", true)
-  centos_8:
-    type: build
-    title: Build CentOS 8 RPMs and store to docker image
-    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
-    tag: centos-8.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=centos-8
     no_cache: true
     no_cf_cache: true
     fail_fast: false
