@@ -99,6 +99,22 @@ steps:
       condition:
         all:
           is_old_builder: match("${{base_image}}", "centos", true)
+  centos_8:
+    type: build
+    title: Build CentOS 8 RPMs and store to docker image
+    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
+    tag: centos-8.amd64
+    working_directory: ${{CF_VOLUME_PATH}}
+    dockerfile: Dockerfile.store_rpm
+    build_arguments:
+      - builder_tag=centos-8
+    no_cache: true
+    no_cf_cache: true
+    fail_fast: false
+    when:
+      condition:
+        all:
+          is_old_builder: match("${{base_image}}", "centos", true)
   opensuse_leap_15:
     type: build
     title: Build OpenSUSE Leap 15 RPMs and store to docker image
@@ -161,6 +177,7 @@ steps:
           failed_fedora_31: fedora_31.result == 'failure'
           failed_centos_6: centos_6.result == 'failure'
           failed_centos_7: centos_7.result == 'failure'
+          failed_centos_8: centos_8.result == 'failure'
           failed_opensuse_42: opensuse_leap_42.result == 'failure'
           failed_opensuse_15: opensuse_leap_15.result == 'failure'
           failed_opensuse_tumbleweed_latest: opensuse_tumbleweed_latest.result == 'failure'
