@@ -10,6 +10,7 @@ OS_FILELIST=/tmp/os_filelist
 IMG_TAR=kamailio_img.tar.gz
 
 build_and_install(){
+    apk --no-cache upgrade
     cd /usr/src/kamailio
     chown -R build /usr/src/kamailio
     su - build -c "cd /usr/src/kamailio/pkg/kamailio; make cfg"

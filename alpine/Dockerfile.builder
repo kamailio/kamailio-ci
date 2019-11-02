@@ -1,6 +1,7 @@
 FROM alpine:latest
 
 RUN echo "Prepare base image filelist" \
+    && apk --no-cache upgrade \
     && export OS_FILELIST=/tmp/os_filelist \
     && find /  \( -path /etc -o -path /dev -o -path /home -o -path /media -o -path /proc -o -path /mnt -o -path /root -o -path /sys -o -path /tmp -o -path /run \) -prune  -o -print >> ${OS_FILELIST} \
     && echo "Preparing build environment" \

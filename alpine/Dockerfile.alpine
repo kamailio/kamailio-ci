@@ -1,5 +1,6 @@
 FROM alpine:latest
 
+RUN apk --no-cache upgrade
 ADD kamailio_min-without_os_files.tar.gz /
 
 ENTRYPOINT ["kamailio", "-DD", "-E"]
