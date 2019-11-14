@@ -19,15 +19,15 @@ steps:
     - rm -f Dockerfile.store_rpm
     - wget -q https://raw.githubusercontent.com/kamailio/kamailio-ci/builder/builder/Dockerfile.store_rpm
     - cat Dockerfile.store_rpm
-  fedora_29:
+  fedora_31:
     type: build
-    title: Build Fedora 29 RPMs and store to docker image
+    title: Build Fedora 31 RPMs and store to docker image
     image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
-    tag: fedora-29.amd64
+    tag: fedora-31.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-29
+      - builder_tag=fedora-31
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -51,15 +51,15 @@ steps:
       condition:
         all:
           is_old_builder: match("${{base_image}}", "fedora", true)
-  fedora_31:
+  fedora_29:
     type: build
-    title: Build Fedora 31 RPMs and store to docker image
+    title: Build Fedora 29 RPMs and store to docker image
     image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
-    tag: fedora-31.amd64
+    tag: fedora-29.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-31
+      - builder_tag=fedora-29
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -83,22 +83,6 @@ steps:
       condition:
         all:
           is_old_builder: match("${{base_image}}", "centos", true)
-  centos_6:
-    type: build
-    title: Build CentOS 6 RPMs and store to docker image
-    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
-    tag: centos-6.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=centos-6
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_old_builder: match("${{base_image}}", "centos", true)
   centos_7:
     type: build
     title: Build CentOS 7 RPMs and store to docker image
@@ -115,22 +99,22 @@ steps:
       condition:
         all:
           is_old_builder: match("${{base_image}}", "centos", true)
-  opensuse_leap_15:
+  centos_6:
     type: build
-    title: Build OpenSUSE Leap 15 RPMs and store to docker image
+    title: Build CentOS 6 RPMs and store to docker image
     image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
-    tag: opensuse_leap-15.amd64
+    tag: centos-6.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=opensuse_leap-15
+      - builder_tag=centos-6
     no_cache: true
     no_cf_cache: true
     fail_fast: false
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "opensuse", true)
+          is_old_builder: match("${{base_image}}", "centos", true)
   opensuse_tumbleweed_latest:
     type: build
     title: Build OpenSUSE Tumbleweed RPMs and store to docker image
@@ -140,6 +124,22 @@ steps:
     dockerfile: Dockerfile.store_rpm
     build_arguments:
       - builder_tag=opensuse_tumbleweed-latest
+    no_cache: true
+    no_cf_cache: true
+    fail_fast: false
+    when:
+      condition:
+        all:
+          is_old_builder: match("${{base_image}}", "opensuse", true)
+  opensuse_leap_15:
+    type: build
+    title: Build OpenSUSE Leap 15 RPMs and store to docker image
+    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
+    tag: opensuse_leap-15.amd64
+    working_directory: ${{CF_VOLUME_PATH}}
+    dockerfile: Dockerfile.store_rpm
+    build_arguments:
+      - builder_tag=opensuse_leap-15
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -172,12 +172,12 @@ steps:
     when:
       condition:
         any:
-          failed_fedora_29: fedora_29.result == 'failure'
-          failed_fedora_30: fedora_30.result == 'failure'
           failed_fedora_31: fedora_31.result == 'failure'
-          failed_centos_6: centos_6.result == 'failure'
-          failed_centos_7: centos_7.result == 'failure'
+          failed_fedora_30: fedora_30.result == 'failure'
+          failed_fedora_29: fedora_29.result == 'failure'
           failed_centos_8: centos_8.result == 'failure'
-          failed_opensuse_42: opensuse_leap_42.result == 'failure'
-          failed_opensuse_15: opensuse_leap_15.result == 'failure'
+          failed_centos_7: centos_7.result == 'failure'
+          failed_centos_6: centos_6.result == 'failure'
           failed_opensuse_tumbleweed_latest: opensuse_tumbleweed_latest.result == 'failure'
+          failed_opensuse_15: opensuse_leap_15.result == 'failure'
+          failed_opensuse_42: opensuse_leap_42.result == 'failure'
