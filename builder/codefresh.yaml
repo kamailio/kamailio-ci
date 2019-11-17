@@ -19,6 +19,22 @@ steps:
     - rm -f Dockerfile.store_rpm
     - wget -q https://raw.githubusercontent.com/kamailio/kamailio-ci/builder/builder/Dockerfile.store_rpm
     - cat Dockerfile.store_rpm
+  rhel_8:
+    type: build
+    title: Build RHEL 8 RPMs and store to docker image
+    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
+    tag: rhel-8.amd64
+    working_directory: ${{CF_VOLUME_PATH}}
+    dockerfile: Dockerfile.store_rpm
+    build_arguments:
+      - builder_tag=rhel-8
+    no_cache: true
+    no_cf_cache: true
+    fail_fast: false
+    when:
+      condition:
+        all:
+          is_match_builder: match("${{base_image}}", "rhel", true)
   fedora_31:
     type: build
     title: Build Fedora 31 RPMs and store to docker image
@@ -34,7 +50,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "fedora", true)
+          is_match_builder: match("${{base_image}}", "fedora", true)
   fedora_30:
     type: build
     title: Build Fedora 30 RPMs and store to docker image
@@ -50,7 +66,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "fedora", true)
+          is_match_builder: match("${{base_image}}", "fedora", true)
   fedora_29:
     type: build
     title: Build Fedora 29 RPMs and store to docker image
@@ -66,7 +82,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "fedora", true)
+          is_match_builder: match("${{base_image}}", "fedora", true)
   centos_8:
     type: build
     title: Build CentOS 8 RPMs and store to docker image
@@ -82,7 +98,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "centos", true)
+          is_match_builder: match("${{base_image}}", "centos", true)
   centos_7:
     type: build
     title: Build CentOS 7 RPMs and store to docker image
@@ -98,7 +114,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "centos", true)
+          is_match_builder: match("${{base_image}}", "centos", true)
   centos_6:
     type: build
     title: Build CentOS 6 RPMs and store to docker image
@@ -114,7 +130,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "centos", true)
+          is_match_builder: match("${{base_image}}", "centos", true)
   opensuse_tumbleweed_latest:
     type: build
     title: Build OpenSUSE Tumbleweed RPMs and store to docker image
@@ -130,7 +146,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "opensuse", true)
+          is_match_builder: match("${{base_image}}", "opensuse", true)
   opensuse_leap_15:
     type: build
     title: Build OpenSUSE Leap 15 RPMs and store to docker image
@@ -146,7 +162,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "opensuse", true)
+          is_match_builder: match("${{base_image}}", "opensuse", true)
   opensuse_leap_42:
     type: build
     title: Build OpenSUSE Leap 42 RPMs and store to docker image
@@ -162,7 +178,7 @@ steps:
     when:
       condition:
         all:
-          is_old_builder: match("${{base_image}}", "opensuse", true)
+          is_match_builder: match("${{base_image}}", "opensuse", true)
   print_error_message:
     image: alpine:latest
     title: Marking pipeline status
