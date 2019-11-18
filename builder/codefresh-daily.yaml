@@ -31,10 +31,6 @@ steps:
     no_cache: true
     no_cf_cache: true
     fail_fast: false
-    when:
-      condition:
-        all:
-          is_matched_builder: match("${{base_image}}", "centos", true)
   centos_7:
     type: build
     title: Build CentOS 7 RPMs and store to docker image
@@ -47,10 +43,6 @@ steps:
     no_cache: true
     no_cf_cache: true
     fail_fast: false
-    when:
-      condition:
-        all:
-          is_matched_builder: match("${{base_image}}", "centos", true)
   print_error_message:
     image: alpine:latest
     title: Marking pipeline status
