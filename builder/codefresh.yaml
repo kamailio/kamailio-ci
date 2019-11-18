@@ -19,22 +19,6 @@ steps:
     - rm -f Dockerfile.store_rpm
     - wget -q https://raw.githubusercontent.com/kamailio/kamailio-ci/builder/builder/Dockerfile.store_rpm
     - cat Dockerfile.store_rpm
-  rhel_7:
-    type: build
-    title: Build RHEL 7 RPMs and store to docker image
-    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
-    tag: rhel-7.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=rhel-7
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_match_builder: match("${{base_image}}", "rhel", true)
   rhel_8:
     type: build
     title: Build RHEL 8 RPMs and store to docker image
@@ -44,6 +28,22 @@ steps:
     dockerfile: Dockerfile.store_rpm
     build_arguments:
       - builder_tag=rhel-8
+    no_cache: true
+    no_cf_cache: true
+    fail_fast: false
+    when:
+      condition:
+        all:
+          is_match_builder: match("${{base_image}}", "rhel", true)
+  rhel_7:
+    type: build
+    title: Build RHEL 7 RPMs and store to docker image
+    image_name: rpms-${{CF_BRANCH_TAG_NORMALIZED}}
+    tag: rhel-7.amd64
+    working_directory: ${{CF_VOLUME_PATH}}
+    dockerfile: Dockerfile.store_rpm
+    build_arguments:
+      - builder_tag=rhel-7
     no_cache: true
     no_cf_cache: true
     fail_fast: false
