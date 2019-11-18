@@ -3,7 +3,7 @@ steps:
   main_clone:
     type: "git-clone"
     title: "Cloning kamailio repository"
-    repo: "${{CF_REPO_OWNER}}/${{CF_REPO_NAME}}"
+    repo: "sergey-safarov/kamailio"
     revision: "master"
   preps:
     type: freestyle
