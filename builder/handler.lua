@@ -9,7 +9,7 @@ local json = require "json"
 local uuid = require "uuid"
 
 local secret = 'qwerty1'
-workdir = '/run/image_puller/new_images'
+local workdir = '/run/image_puller/new_images'
 
 ngx.header.content_type = "text/plain; charset=utf-8"
 
