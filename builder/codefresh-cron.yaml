@@ -36,7 +36,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-master", "image_tag":"centos-8.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-8.amd64"}'
     when:
       condition:
         any:
@@ -58,7 +58,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-master", "image_tag":"centos-7.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-7.amd64"}'
     when:
       condition:
         any:
