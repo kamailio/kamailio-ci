@@ -40,7 +40,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"fedora-31.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-31.amd64"}'
     when:
       condition:
         any:
@@ -66,7 +66,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"fedora-30.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-30.amd64"}'
     when:
       condition:
         any:
@@ -92,7 +92,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"fedora-29.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-29.amd64"}'
     when:
       condition:
         any:
@@ -118,7 +118,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-8.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-8.amd64"}'
     when:
       condition:
         any:
@@ -144,7 +144,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-7.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-7.amd64"}'
     when:
       condition:
         any:
@@ -170,7 +170,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-6.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-6.amd64"}'
     when:
       condition:
         any:
@@ -196,7 +196,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"rhel-8.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"rhel-8.amd64"}'
     when:
       condition:
         any:
@@ -222,7 +222,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"rhel-7.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"rhel-7.amd64"}'
     when:
       condition:
         any:
@@ -248,7 +248,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"opensuse_tumbleweed-latest.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"opensuse_tumbleweed-latest.amd64"}'
     when:
       condition:
         any:
@@ -274,7 +274,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"opensuse_leap-15.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"opensuse_leap-15.amd64"}'
     when:
       condition:
         any:
@@ -300,7 +300,7 @@ steps:
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"opensuse_leap-42.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"opensuse_leap-42.amd64"}'
     when:
       condition:
         any:
