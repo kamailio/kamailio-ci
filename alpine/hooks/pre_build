@@ -27,7 +27,7 @@ refresh_builder
 
 echo "=> Build Kamailio source code"
 
-if [ "$SOURCE_BRANCH" = "master" ];then
+if [ "${ALPINE_BRANCH}" = "edge" ]; then
     sed -i -e 's/latest$/edge/' Dockerfile.alpine
     sed -i -e 's/latest$/edge/' Dockerfile.debug
 fi
