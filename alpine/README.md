@@ -6,8 +6,12 @@
 
 -	`master`, `master-alpine`, `master-alpine.debug`
 -	`latest`, `latest-alpine`, `latest-alpine.debug`
+-	`5.3`, `5.3-alpine`, `5.3-alpine.debug`
 -	`5.2`, `5.2-alpine`, `5.2-alpine.debug`
 -	`5.1`, `5.1-alpine`, `5.1-alpine.debug`
+-	`5.3.1`, `5.3.1-alpine`, `5.3.1-alpine.debug`
+-	`5.3.0`, `5.3.0-alpine`, `5.3.0-alpine.debug`
+-	`5.2.5`, `5.2.5-alpine`, `5.2.5-alpine.debug`
 -	`5.2.4`, `5.2.4-alpine`, `5.2.4-alpine.debug`
 -	`5.2.3`, `5.2.3-alpine`, `5.2.3-alpine.debug`
 -	`5.2.2`, `5.2.2-alpine`, `5.2.2-alpine.debug`
