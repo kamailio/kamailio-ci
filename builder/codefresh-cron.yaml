@@ -22,8 +22,8 @@ steps:
   centos_8:
     type: build
     title: Build CentOS 8 RPMs and store to docker image
-    image_name: rpms-${{branch}}
-    tag: centos-8.amd64
+    image_name: kamailio/kamailio-store
+    tag: ${{branch}}-centos-8.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
@@ -44,8 +44,8 @@ steps:
   centos_7:
     type: build
     title: Build CentOS 7 RPMs and store to docker image
-    image_name: rpms-${{branch}}
-    tag: centos-7.amd64
+    image_name: kamailio/kamailio-store
+    tag: ${{branch}}-centos-7.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
