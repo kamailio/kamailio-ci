@@ -9,7 +9,7 @@ RUN echo "Prepare base image filelist" \
          libxml2-dev curl-dev unixodbc-dev confuse-dev ncurses-dev sqlite-dev lua-dev openldap-dev \
          net-snmp-dev libuuid libev-dev jansson-dev json-c-dev libevent-dev linux-headers \
          libmemcached-dev rabbitmq-c-dev hiredis-dev libmaxminddb-dev libunistring-dev freeradius-client-dev lksctp-tools-dev ruby-dev \
-         wireshark-common tcpdump mongo-c-driver-dev \
+         wireshark-common tcpdump mongo-c-driver-dev sudo \
     && adduser -D build && addgroup build abuild \
     && echo "%abuild ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/abuild \
     && su - build -c "git config --global user.name 'Your Full Name'" \
