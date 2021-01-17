@@ -49,7 +49,7 @@ extra_files() {
 /usr/bin/dumpcap
 /usr/lib
 /usr/sbin
-/usr/sbin/tcpdump
+/usr/bin/tcpdump
 /var
 /var/run
 /run
