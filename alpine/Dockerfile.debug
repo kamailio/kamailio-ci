@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:3.12
 
 RUN apk --no-cache upgrade \
     && apk --no-cache add gawk ca-certificates gdb strace mariadb-client postgresql-client musl-dbg \
