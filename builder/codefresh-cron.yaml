@@ -19,6 +19,28 @@ steps:
     - rm -f Dockerfile.store_rpm
     - wget -q https://raw.githubusercontent.com/kamailio/kamailio-ci/builder/builder/Dockerfile.store_rpm
     - cat Dockerfile.store_rpm
+  centos_9:
+    type: build
+    title: Build CentOS 9 RPMs and store to docker image
+    image_name: kamailio/kamailio-store
+    tag: ${{branch}}-centos-9.amd64
+    working_directory: ${{CF_VOLUME_PATH}}
+    dockerfile: Dockerfile.store_rpm
+    build_arguments:
+      - builder_tag=centos-9
+    no_cache: true
+    no_cf_cache: true
+    fail_fast: false
+  centos_9_webhook:
+    title: 'publish CentOS-9 rpm files'
+    image: 'codefreshplugins/webhook-plugin:latest'
+    environment:
+      - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-9.amd64"}'
+    when:
+      condition:
+        any:
+          failed_centos_9: centos_9.result == 'success'
   centos_8:
     type: build
     title: Build CentOS 8 RPMs and store to docker image
@@ -41,28 +63,6 @@ steps:
       condition:
         any:
           failed_centos_8: centos_8.result == 'success'
-  centos_7:
-    type: build
-    title: Build CentOS 7 RPMs and store to docker image
-    image_name: kamailio/kamailio-store
-    tag: ${{branch}}-centos-7.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=centos-7
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-  centos_7_webhook:
-    title: 'publish CentOS-7 rpm files'
-    image: 'codefreshplugins/webhook-plugin:latest'
-    environment:
-      - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-7.amd64"}'
-    when:
-      condition:
-        any:
-          failed_centos_8: centos_8.result == 'success'
   print_error_message:
     image: alpine:latest
     title: Marking pipeline status
@@ -72,5 +72,5 @@ steps:
     when:
       condition:
         any:
+          failed_centos_9: centos_9.result == 'failure'
           failed_centos_8: centos_8.result == 'failure'
-          failed_centos_7: centos_7.result == 'failure'
