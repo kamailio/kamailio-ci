@@ -19,15 +19,15 @@ steps:
     - rm -f Dockerfile.store_rpm
     - wget -q https://raw.githubusercontent.com/kamailio/kamailio-ci/builder/builder/Dockerfile.store_rpm
     - cat Dockerfile.store_rpm
-  fedora_33:
+  fedora_37:
     type: build
-    title: Build Fedora 33 RPMs and store to docker image
+    title: Build Fedora 37 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-33.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-37.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-33
+      - builder_tag=fedora-37
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -35,25 +35,25 @@ steps:
       condition:
         all:
           is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_33_webhook:
-    title: 'publish Fedora-33 rpm files'
+  fedora_37_webhook:
+    title: 'publish Fedora-37 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-33.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-37.amd64"}'
     when:
       condition:
         any:
-          success_fedora_33: fedora_33.result == 'success'
-  fedora_32:
+          success_fedora_37: fedora_37.result == 'success'
+  fedora_36:
     type: build
-    title: Build Fedora 32 RPMs and store to docker image
+    title: Build Fedora 36 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-32.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-36.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-32
+      - builder_tag=fedora-36
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -61,68 +61,42 @@ steps:
       condition:
         all:
           is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_32_webhook:
-    title: 'publish Fedora-32 rpm files'
+  fedora_36_webhook:
+    title: 'publish Fedora-36 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-32.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-36.amd64"}'
     when:
       condition:
         any:
-          success_fedora_32: fedora_32.result == 'success'
-  fedora_31:
+          success_fedora_36: fedora_36.result == 'success'
+  centos_9:
     type: build
-    title: Build Fedora 31 RPMs and store to docker image
+    title: Build CentOS 9 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-31.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-centos-9.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-31
+      - builder_tag=centos-9
     no_cache: true
     no_cf_cache: true
     fail_fast: false
     when:
       condition:
         all:
-          is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_31_webhook:
-    title: 'publish Fedora-31 rpm files'
+          is_match_builder: match("${{base_image}}", "centos", true)
+  centos_9_webhook:
+    title: 'publish CentOS-9 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-31.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-9.amd64"}'
     when:
       condition:
         any:
-          success_fedora_31: fedora_31.result == 'success'
-  fedora_30:
-    type: build
-    title: Build Fedora 30 RPMs and store to docker image
-    image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-30.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=fedora-30
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_30_webhook:
-    title: 'publish Fedora-30 rpm files'
-    image: 'codefreshplugins/webhook-plugin:latest'
-    environment:
-      - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-30.amd64"}'
-    when:
-      condition:
-        any:
-          success_fedora_30: fedora_30.result == 'success'
+          success_centos_9: centos_9.result == 'success'
   centos_8:
     type: build
     title: Build CentOS 8 RPMs and store to docker image
@@ -305,32 +279,6 @@ steps:
       condition:
         any:
           success_opensuse_leap_15: opensuse_leap_15.result == 'success'
-  opensuse_leap_42:
-    type: build
-    title: Build OpenSUSE Leap 42 RPMs and store to docker image
-    image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-opensuse_leap-42.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=opensuse_leap-42
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_match_builder: match("${{base_image}}", "opensuse", true)
-  opensuse_leap_42_webhook:
-    title: 'publish OpenSUSE Leap 42 rpm files'
-    image: 'codefreshplugins/webhook-plugin:latest'
-    environment:
-      - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"opensuse_leap-42.amd64"}'
-    when:
-      condition:
-        any:
-          success_opensuse_leap_42: opensuse_leap_42.result == 'success'
   print_error_message:
     image: alpine:latest
     title: Marking pipeline status
@@ -340,10 +288,9 @@ steps:
     when:
       condition:
         any:
-          failed_fedora_33: fedora_33.result == 'failure'
-          failed_fedora_32: fedora_32.result == 'failure'
-          failed_fedora_31: fedora_31.result == 'failure'
-          failed_fedora_30: fedora_30.result == 'failure'
+          failed_fedora_37: fedora_37.result == 'failure'
+          failed_fedora_36: fedora_36.result == 'failure'
+          failed_centos_9: centos_9.result == 'failure'
           failed_centos_8: centos_8.result == 'failure'
           failed_centos_7: centos_7.result == 'failure'
           failed_centos_6: centos_6.result == 'failure'
@@ -351,4 +298,3 @@ steps:
           failed_rhel_7: rhel_7.result == 'failure'
           failed_opensuse_tumbleweed_latest: opensuse_tumbleweed_latest.result == 'failure'
           failed_opensuse_15: opensuse_leap_15.result == 'failure'
-          failed_opensuse_42: opensuse_leap_42.result == 'failure'
