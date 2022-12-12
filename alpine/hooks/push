@@ -1,14 +1,11 @@
 #!/bin/bash
 
-IMAGE_NAME="${IMAGE_NAME:-kamailio:master-alpine}"
+IMAGE_NAME="${IMAGE_NAME:-kamailio:master}"
 
 set -x
 docker tag $IMAGE_NAME $DOCKER_REPO:$SOURCE_BRANCH \
     && docker tag $IMAGE_NAME-alpine $DOCKER_REPO:$SOURCE_BRANCH-alpine \
     && docker tag $IMAGE_NAME-alpine.debug $DOCKER_REPO:$SOURCE_BRANCH-alpine.debug \
-    && docker push $IMAGE_NAME \
-    && docker push $IMAGE_NAME-alpine \
-    && docker push $IMAGE_NAME-alpine.debug \
     && docker push $DOCKER_REPO:$SOURCE_BRANCH \
     && docker push $DOCKER_REPO:$SOURCE_BRANCH-alpine \
     && docker push $DOCKER_REPO:$SOURCE_BRANCH-alpine.debug
