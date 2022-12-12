@@ -49,7 +49,7 @@ extra_files() {
 /usr/bin/dumpcap
 /usr/lib
 /usr/sbin
-/usr/sbin/tcpdump
+/usr/bin/tcpdump
 /var
 /var/run
 /run
@@ -129,7 +129,7 @@ tar_files() {
     rm -f $TARLIST $TARLIST.without_os_files
 
     # copy tar archive wuthout os files to result dir
-    cp $TMP_TAR.without_os_files /usr/src/kamailio/pkg/docker/alpine/
+    cp $TMP_TAR.without_os_files /usr/src/kamailio/pkg/docker/alpine/kamailio_min-without_os_files.tar.gz
 }
 
 make_image_tar() {

@@ -15,7 +15,6 @@ init_local_repo() {
 }
 
 build_images() {
-    mv kamailio_min.tar.gz.without_os_files kamailio_min-without_os_files.tar.gz
     docker build --no-cache -t $IMAGE_NAME .
     docker build --no-cache -t $IMAGE_NAME-alpine -f Dockerfile.alpine .
     docker build --no-cache -t $IMAGE_NAME-alpine.debug --network kamailio-build -f Dockerfile.debug .
