@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:latest
 
 RUN echo "Prepare base image filelist" \
     && apk --no-cache upgrade \

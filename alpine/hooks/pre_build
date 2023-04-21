@@ -2,10 +2,10 @@
 
 set -x
 # Setting environment vars
-ALPINE_BRANCH="${ALPINE_BRANCH:-3.12}"
+ALPINE_BRANCH="${ALPINE_BRANCH:-latest}"
 
 if [ "$SOURCE_BRANCH" = "master" ];then
-    ALPINE_BRANCH="3.12"
+    ALPINE_BRANCH="edge"
 fi
 
 refresh_builder() {
