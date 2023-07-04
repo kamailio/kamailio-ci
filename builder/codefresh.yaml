@@ -45,15 +45,15 @@ steps:
       condition:
         any:
           success_fedora_37: fedora_37.result == 'success'
-  fedora_36:
+  fedora_38:
     type: build
-    title: Build Fedora 36 RPMs and store to docker image
+    title: Build Fedora 38 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-36.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-38.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-36
+      - builder_tag=fedora-38
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -61,16 +61,16 @@ steps:
       condition:
         all:
           is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_36_webhook:
-    title: 'publish Fedora-36 rpm files'
+  fedora_38_webhook:
+    title: 'publish Fedora-38 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-36.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-38.amd64"}'
     when:
       condition:
         any:
-          success_fedora_36: fedora_36.result == 'success'
+          success_fedora_38: fedora_38.result == 'success'
   centos_9:
     type: build
     title: Build CentOS 9 RPMs and store to docker image
@@ -289,7 +289,7 @@ steps:
       condition:
         any:
           failed_fedora_37: fedora_37.result == 'failure'
-          failed_fedora_36: fedora_36.result == 'failure'
+          failed_fedora_38: fedora_38.result == 'failure'
           failed_centos_9: centos_9.result == 'failure'
           failed_centos_8: centos_8.result == 'failure'
           failed_centos_7: centos_7.result == 'failure'
