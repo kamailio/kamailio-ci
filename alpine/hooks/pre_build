@@ -4,6 +4,7 @@ set -o errexit -o nounset -o pipefail
 set -x
 # Setting environment vars
 ALPINE_BRANCH="${ALPINE_BRANCH:-latest}"
+DOCKER_REPO="${DOCKER_REPO:-kamailio/kamailio-ci}"
 
 if [ "$SOURCE_BRANCH" = "master" ];then
     ALPINE_BRANCH="edge"
@@ -11,17 +12,17 @@ fi
 
 refresh_builder() {
     docker pull alpine:${ALPINE_BRANCH} || true
-    docker pull kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH} || true
+    docker pull ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH} || true
     local SHA_ALPINE=$(docker image inspect -f '{{index .RootFS.Layers 0}}' alpine:${ALPINE_BRANCH})
-    local SHA_BUILDER=$(docker image inspect -f '{{index .RootFS.Layers 0}}' kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH})
+    local SHA_BUILDER=$(docker image inspect -f '{{index .RootFS.Layers 0}}' ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH})
     if [ "${SHA_ALPINE}" = "${SHA_BUILDER}" ]; then
       echo "Builder already use fresh alpine base image. Continue"
       return 0
     fi
     sed -i -e "s/alpine:latest/alpine:${ALPINE_BRANCH}/" Dockerfile.builder
-    docker build -t kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH} --file Dockerfile.builder .
+    docker build -t ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH} --file Dockerfile.builder .
     if [ "${GITHUB_REPOSITORY_OWNER}" == "kamailio" ]; then
-      docker push kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH}
+      docker push ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH}
     fi
 }
 
@@ -38,6 +39,6 @@ fi
 docker run --volume=`pwd`/../../..:/usr/src/kamailio \
            --volume=`pwd`/build.sh:/build.sh \
            --entrypoint=/build.sh \
-           kamailio/kamailio-ci:builder-alpine.${ALPINE_BRANCH}
+           ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH}
 
 exit $?
