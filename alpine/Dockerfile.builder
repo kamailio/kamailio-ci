@@ -1,5 +1,5 @@
 FROM alpine:latest
-
+LABEL org.opencontainers.image.authors="Sergey Safarov <s.safarov@gmail.com>"
 RUN echo "Prepare base image filelist" \
     && apk --no-cache upgrade \
     && export OS_FILELIST=/tmp/os_filelist \
