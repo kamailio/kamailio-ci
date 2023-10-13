@@ -5,19 +5,22 @@ set -x
 # Setting environment vars
 ALPINE_BRANCH="${ALPINE_BRANCH:-latest}"
 DOCKER_REPO="${DOCKER_REPO:-kamailio/kamailio-ci}"
+REFRESH_ONLY="${REFRESH_ONLY:-false}"
 
 if [ "$SOURCE_BRANCH" = "master" ];then
     ALPINE_BRANCH="edge"
 fi
 
 refresh_builder() {
-    docker pull alpine:${ALPINE_BRANCH} || true
-    docker pull ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH} || true
-    local SHA_ALPINE=$(docker image inspect -f '{{index .RootFS.Layers 0}}' alpine:${ALPINE_BRANCH})
-    local SHA_BUILDER=$(docker image inspect -f '{{index .RootFS.Layers 0}}' ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH})
-    if [ "${SHA_ALPINE}" = "${SHA_BUILDER}" ]; then
-      echo "Builder already use fresh alpine base image. Continue"
-      return 0
+    docker pull alpine:${ALPINE_BRANCH}
+    if ! ${REFRESH_ONLY} ; then
+      docker pull ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH}
+      local SHA_ALPINE=$(docker image inspect -f '{{index .RootFS.Layers 0}}' alpine:${ALPINE_BRANCH})
+      local SHA_BUILDER=$(docker image inspect -f '{{index .RootFS.Layers 0}}' ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH})
+      if [ "${SHA_ALPINE}" = "${SHA_BUILDER}" ]; then
+        echo "Builder already use fresh alpine base image. Continue"
+        return 0
+      fi
     fi
     sed -i -e "s/alpine:latest/alpine:${ALPINE_BRANCH}/" Dockerfile.builder
     docker build -t ${DOCKER_REPO}:builder-alpine.${ALPINE_BRANCH} --file Dockerfile.builder .
@@ -28,6 +31,11 @@ refresh_builder() {
 
 echo "=> Refreshing builder image"
 refresh_builder
+
+if ${REFRESH_ONLY} ; then
+    echo "=> REFRESH_ONLY detected, done"
+    exit 0
+fi
 
 echo "=> Build Kamailio source code"
 
