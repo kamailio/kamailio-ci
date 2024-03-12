@@ -41,6 +41,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-37.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -67,6 +68,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-38.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -93,6 +95,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-9.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -119,6 +122,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-8.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -145,6 +149,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-7.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -171,6 +176,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-6.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -197,6 +203,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"rhel-8.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -223,6 +230,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"rhel-7.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -249,6 +257,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"opensuse_tumbleweed-latest.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -275,6 +284,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"opensuse_leap-15.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:

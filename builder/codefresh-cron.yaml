@@ -37,6 +37,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-9.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
@@ -59,6 +60,7 @@ steps:
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
       - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-8.amd64"}'
+      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
