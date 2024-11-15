@@ -19,15 +19,15 @@ steps:
     - rm -f Dockerfile.store_rpm
     - wget -q https://raw.githubusercontent.com/kamailio/kamailio-ci/builder/builder/Dockerfile.store_rpm
     - cat Dockerfile.store_rpm
-  fedora_37:
+  fedora_41:
     type: build
-    title: Build Fedora 37 RPMs and store to docker image
+    title: Build Fedora 41 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-37.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-41.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-37
+      - builder_tag=fedora-41
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -35,26 +35,26 @@ steps:
       condition:
         all:
           is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_37_webhook:
-    title: 'publish Fedora-37 rpm files'
+  fedora_41_webhook:
+    title: 'publish Fedora-41 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-37.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-41.amd64"}'
       - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
-          success_fedora_37: fedora_37.result == 'success'
-  fedora_38:
+          success_fedora_41: fedora_41.result == 'success'
+  fedora_40:
     type: build
-    title: Build Fedora 38 RPMs and store to docker image
+    title: Build Fedora 40 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-38.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-fedora-40.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=fedora-38
+      - builder_tag=fedora-40
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -62,17 +62,17 @@ steps:
       condition:
         all:
           is_match_builder: match("${{base_image}}", "fedora", true)
-  fedora_38_webhook:
-    title: 'publish Fedora-38 rpm files'
+  fedora_40_webhook:
+    title: 'publish Fedora-40 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-38.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"fedora-40.amd64"}'
       - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
-          success_fedora_38: fedora_38.result == 'success'
+          success_fedora_40: fedora_40.result == 'success'
   centos_9:
     type: build
     title: Build CentOS 9 RPMs and store to docker image
@@ -127,60 +127,6 @@ steps:
       condition:
         any:
           success_centos_8: centos_8.result == 'success'
-  centos_7:
-    type: build
-    title: Build CentOS 7 RPMs and store to docker image
-    image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-centos-7.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=centos-7
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_match_builder: match("${{base_image}}", "centos", true)
-  centos_7_webhook:
-    title: 'publish CentOS-7 rpm files'
-    image: 'codefreshplugins/webhook-plugin:latest'
-    environment:
-      - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-7.amd64"}'
-      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
-    when:
-      condition:
-        any:
-          success_centos_7: centos_7.result == 'success'
-  centos_6:
-    type: build
-    title: Build CentOS 6 RPMs and store to docker image
-    image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-centos-6.amd64
-    working_directory: ${{CF_VOLUME_PATH}}
-    dockerfile: Dockerfile.store_rpm
-    build_arguments:
-      - builder_tag=centos-6
-    no_cache: true
-    no_cf_cache: true
-    fail_fast: false
-    when:
-      condition:
-        all:
-          is_match_builder: match("${{base_image}}", "centos", true)
-  centos_6_webhook:
-    title: 'publish CentOS-6 rpm files'
-    image: 'codefreshplugins/webhook-plugin:latest'
-    environment:
-      - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"centos-6.amd64"}'
-      - 'WEBHOOK_TOKEN=${{Auth-Token}}'
-    when:
-      condition:
-        any:
-          success_centos_6: centos_6.result == 'success'
   rhel_8:
     type: build
     title: Build RHEL 8 RPMs and store to docker image
@@ -208,15 +154,15 @@ steps:
       condition:
         any:
           success_rhel_8: rhel_8.result == 'success'
-  rhel_7:
+  rhel_9:
     type: build
-    title: Build RHEL 7 RPMs and store to docker image
+    title: Build RHEL 9 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-rhel-7.amd64
+    tag: ${{CF_BRANCH_TAG_NORMALIZED}}-rhel-9.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=rhel-7
+      - builder_tag=rhel-9
     no_cache: true
     no_cf_cache: true
     fail_fast: false
@@ -225,16 +171,16 @@ steps:
         all:
           is_match_builder: match("${{base_image}}", "rhel", true)
   rhel_7_webhook:
-    title: 'publish RHEL-7 rpm files'
+    title: 'publish RHEL-9 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"rhel-7.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{CF_BRANCH_TAG_NORMALIZED}}", "image_tag":"rhel-9.amd64"}'
       - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
-          success_rhel_7: rhel_7.result == 'success'
+          success_rhel_9: rhel_9.result == 'success'
   opensuse_tumbleweed_latest:
     type: build
     title: Build OpenSUSE Tumbleweed RPMs and store to docker image
@@ -298,13 +244,11 @@ steps:
     when:
       condition:
         any:
-          failed_fedora_37: fedora_37.result == 'failure'
-          failed_fedora_38: fedora_38.result == 'failure'
+          failed_fedora_41: fedora_41.result == 'failure'
+          failed_fedora_40: fedora_40.result == 'failure'
           failed_centos_9: centos_9.result == 'failure'
           failed_centos_8: centos_8.result == 'failure'
-          failed_centos_7: centos_7.result == 'failure'
-          failed_centos_6: centos_6.result == 'failure'
           failed_rhel_8: rhel_8.result == 'failure'
-          failed_rhel_7: rhel_7.result == 'failure'
+          failed_rhel_9: rhel_9.result == 'failure'
           failed_opensuse_tumbleweed_latest: opensuse_tumbleweed_latest.result == 'failure'
           failed_opensuse_15: opensuse_leap_15.result == 'failure'
