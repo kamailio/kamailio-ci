@@ -8,7 +8,7 @@ steps:
   preps:
     type: freestyle
     title: Build preparation
-    image: safarov/kamailio-builder:centos-7
+    image: safarov/kamailio-builder:centos-9
     commands:
     - rm -f kamailio-*.src.rpm ${CF_VOLUME_PATH}/kamailio-*.src.rpm
     - make cfg
@@ -42,29 +42,29 @@ steps:
       condition:
         any:
           failed_centos_9: centos_9.result == 'success'
-  centos_8:
+  rhel_10:
     type: build
-    title: Build CentOS 8 RPMs and store to docker image
+    title: Build RHEL 10 RPMs and store to docker image
     image_name: kamailio/kamailio-store
-    tag: ${{branch}}-centos-8.amd64
+    tag: ${{branch}}-rhel-10.amd64
     working_directory: ${{CF_VOLUME_PATH}}
     dockerfile: Dockerfile.store_rpm
     build_arguments:
-      - builder_tag=centos-8
+      - builder_tag=rhel-10
     no_cache: true
     no_cf_cache: true
     fail_fast: false
-  centos_8_webhook:
-    title: 'publish CentOS-8 rpm files'
+  rhel_10_webhook:
+    title: 'publish RHEL-10 rpm files'
     image: 'codefreshplugins/webhook-plugin:latest'
     environment:
       - 'WEBHOOK_URL=http://rpm.kamailio.org/publish'
-      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"centos-8.amd64"}'
+      - 'WEBHOOK_BODY={"image_name":"rpms-${{branch}}", "image_tag":"rhel-10.amd64"}'
       - 'WEBHOOK_TOKEN=${{Auth-Token}}'
     when:
       condition:
         any:
-          failed_centos_8: centos_8.result == 'success'
+          failed_rhel_10: rhel_10.result == 'success'
   print_error_message:
     image: alpine:latest
     title: Marking pipeline status
@@ -75,4 +75,4 @@ steps:
       condition:
         any:
           failed_centos_9: centos_9.result == 'failure'
-          failed_centos_8: centos_8.result == 'failure'
+          failed_rhel_10: rhel_10.result == 'failure'
