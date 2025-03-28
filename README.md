@@ -2,49 +2,14 @@
 [![Docker Pulls](https://img.shields.io/docker/pulls/kamailio/kamailio-ci.svg)](https://hub.docker.com/r/kamailio/kamailio-ci/)
 [![Docker Automated build](https://img.shields.io/docker/automated/kamailio/kamailio-ci.svg)](https://hub.docker.com/r/kamailio/kamailio-ci/)
 
-# Supported tags
+# [Supported tags](https://github.com/kamailio/kamailio-ci/pkgs/container/kamailio-ci/versions)
 
 -	`master`, `master-alpine`, `master-alpine.debug`
 -	`latest`, `latest-alpine`, `latest-alpine.debug`
--	`5.4`, `5.4-alpine`, `5.4-alpine.debug`
--	`5.3`, `5.3-alpine`, `5.3-alpine.debug`
--	`5.2`, `5.2-alpine`, `5.2-alpine.debug`
--	`5.1`, `5.1-alpine`, `5.1-alpine.debug`
--	`5.4.3`, `5.4.3-alpine`, `5.4.3-alpine.debug`
--	`5.4.2`, `5.4.2-alpine`, `5.4.2-alpine.debug`
--	`5.4.1`, `5.4.1-alpine`, `5.4.1-alpine.debug`
--	`5.4.0`, `5.4.0-alpine`, `5.4.0-alpine.debug`
--	`5.3.8`, `5.3.8-alpine`, `5.3.8-alpine.debug`
--	`5.3.7`, `5.3.7-alpine`, `5.3.7-alpine.debug`
--	`5.3.6`, `5.3.6-alpine`, `5.3.6-alpine.debug`
--	`5.3.5`, `5.3.5-alpine`, `5.3.5-alpine.debug`
--	`5.3.4`, `5.3.4-alpine`, `5.3.4-alpine.debug`
--	`5.3.3`, `5.3.3-alpine`, `5.3.3-alpine.debug`
--	`5.3.2`, `5.3.2-alpine`, `5.3.2-alpine.debug`
--	`5.3.1`, `5.3.1-alpine`, `5.3.1-alpine.debug`
--	`5.3.0`, `5.3.0-alpine`, `5.3.0-alpine.debug`
--	`5.2.8`, `5.2.8-alpine`, `5.2.8-alpine.debug`
--	`5.2.7`, `5.2.7-alpine`, `5.2.7-alpine.debug`
--	`5.2.6`, `5.2.6-alpine`, `5.2.6-alpine.debug`
--	`5.2.5`, `5.2.5-alpine`, `5.2.5-alpine.debug`
--	`5.2.4`, `5.2.4-alpine`, `5.2.4-alpine.debug`
--	`5.2.3`, `5.2.3-alpine`, `5.2.3-alpine.debug`
--	`5.2.2`, `5.2.2-alpine`, `5.2.2-alpine.debug`
--	`5.2.1`, `5.2.1-alpine`, `5.2.1-alpine.debug`
--	`5.2.0`, `5.2.0-alpine`, `5.2.0-alpine.debug`
--	`5.1.10`, `5.1.10-alpine`, `5.1.10-alpine.debug`
--	`5.1.9`, `5.1.9-alpine`, `5.1.9-alpine.debug`
--	`5.1.8`, `5.1.8-alpine`, `5.1.8-alpine.debug`
--	`5.1.7`, `5.1.7-alpine`, `5.1.7-alpine.debug`
--	`5.1.6`, `5.1.6-alpine`, `5.1.6-alpine.debug`
--	`5.1.5`, `5.1.5-alpine`, `5.1.5-alpine.debug`
--	`5.1.4`, `5.1.4-alpine`, `5.1.4-alpine.debug`
--	`5.1.3`, `5.1.3-alpine`, `5.1.3-alpine.debug`
--	`5.1.2`, `5.1.2-alpine`, `5.1.2-alpine.debug`
--	`5.1.1`, `5.1.1-alpine`, `5.1.1-alpine.debug`
--	`5.1.0`, `5.1.0-alpine`, `5.1.0-alpine.debug`
+-	`6.x`, `6.x-alpine`, `6.x-alpine.debug`
+-	`5.x`, `5.x-alpine`, `5.x-alpine.debug`
 
-Tags `master`, `latest`, `5.2` and `5.1` based on alpine image with removed all libs except libc, busybox, tcpdump, dumpcap, gawk, kamailio and dependent libs.
+Tags `master`, `latest`, `X.Y` and `X.Y.Z` based on alpine image with removed all libs except libc, busybox, tcpdump, dumpcap, gawk, kamailio and dependent libs.
 
 Tags that contains `-alpine` keyword based on alpine image. All OS tools is untouched and possible to use `apk` utility.
 
