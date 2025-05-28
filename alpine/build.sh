@@ -1,23 +1,30 @@
-#!/bin/sh -e
+#!/bin/sh
 
 # This script is wrote by Sergey Safarov <s.safarov@gmail.com>
-
+set -eu
 BUILD_ROOT=/tmp/kamailio
 FILELIST=/tmp/filelist
 FILELIST_BINARY=/tmp/filelist_binary
 TMP_TAR=/tmp/kamailio_min.tar.gz
 OS_FILELIST=/tmp/os_filelist
 IMG_TAR=kamailio_img.tar.gz
+apkArch="$(apk --print-arch)"
 
-build_and_install(){
-    apk --no-cache upgrade
-    cd /usr/src/kamailio
-    chown -R build /usr/src/kamailio
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio; make cfg"
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio; make apk"
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio/alpine; abuild -r"
-    cd /home/build/packages/kamailio/x86_64
-    ls -1 kamailio-*.apk |  xargs apk --no-cache --allow-untrusted add
+build_apk(){
+    cp -R /usr/src/kamailio ~
+    cd ~/kamailio
+    make cfg
+    make -C pkg/kamailio apk
+    abuild -C pkg/kamailio/alpine -r
+    doas mkdir -p /mnt/context/${apkArch}/apk_files
+    doas mv /home/build/packages/kamailio/* /mnt/context/${apkArch}/apk_files/
+    doas cp pkg/docker/alpine/Dockerfile* /mnt/context/
+    doas chown -R --reference=/usr/src/kamailio /mnt/context/${apkArch}/apk_files
+}
+
+install_apk(){
+    cd /mnt/context/${apkArch}/apk_files
+    ls -1 */kamailio-*.apk |  xargs doas apk --no-cache --allow-untrusted add
 }
 
 list_installed_kamailio_packages() {
@@ -46,7 +53,6 @@ extra_files() {
 /usr/bin
 /usr/bin/awk
 /usr/bin/gawk
-/usr/bin/dumpcap
 /usr/lib
 /usr/sbin
 /usr/bin/tcpdump
@@ -55,6 +61,11 @@ extra_files() {
 /run
 /tmp
 EOF
+    if [ "${apkArch}" != "armhf" ]; then
+    cat << EOF
+/usr/bin/dumpcap
+EOF
+    fi
 }
 
 sort_filelist() {
@@ -80,7 +91,6 @@ filter_unnecessary_files() {
 ldd_helper() {
     TESTFILE=$1
     LD_PRELOAD=/usr/sbin/kamailio ldd $TESTFILE 2> /dev/null > /dev/null || return
-
     LD_PRELOAD=/usr/sbin/kamailio ldd $TESTFILE | sed -e 's/^.* => //' -e 's/ (.*)//' -e 's/\s\+//' -e '/^ldd$/d'
 }
 
@@ -129,7 +139,7 @@ tar_files() {
     rm -f $TARLIST $TARLIST.without_os_files
 
     # copy tar archive wuthout os files to result dir
-    cp $TMP_TAR.without_os_files /usr/src/kamailio/pkg/docker/alpine/kamailio_min-without_os_files.tar.gz
+    doas cp $TMP_TAR.without_os_files /mnt/context/${apkArch}/kamailio_img-without_os_files.tar.gz
 }
 
 make_image_tar() {
@@ -137,15 +147,12 @@ make_image_tar() {
     cd $BUILD_ROOT
     tar xzf $TMP_TAR
     /bin/busybox --install -s bin
-    tar czf /usr/src/kamailio/pkg/docker/alpine/$IMG_TAR *
+    tar czf /tmp/$IMG_TAR *
+    doas cp /tmp/$IMG_TAR /mnt/context/${apkArch}/
 }
 
-create_apk_dir() {
-    mv /home/build/packages/kamailio /usr/src/kamailio/pkg/docker/alpine/apk_files
-}
-
-build_and_install
-
+build_apk
+install_apk
 kamailio_files > $FILELIST
 extra_files >> $FILELIST
 sort_filelist
@@ -153,4 +160,7 @@ filter_unnecessary_files
 find_binaries
 tar_files
 make_image_tar
-create_apk_dir
+doas find /mnt/context -type f -exec chmod 666 -- {} +
+doas find /mnt/context -type d -exec chmod 777 -- {} +
+doas chown -R root:root /mnt/context
+doas cp -R /mnt/context /usr/src/kamailio/pkg/docker/alpine/
