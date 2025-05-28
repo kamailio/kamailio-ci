@@ -10,14 +10,14 @@ OS_FILELIST=/tmp/os_filelist
 IMG_TAR=kamailio_img.tar.gz
 
 build_and_install(){
-    apk --no-cache upgrade
+    local ARCH=$(uname -m)
     cd /usr/src/kamailio
-    chown -R build /usr/src/kamailio
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio; make cfg"
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio; make apk"
-    su - build -c "cd /usr/src/kamailio/pkg/kamailio/alpine; abuild -r"
-    cd /home/build/packages/kamailio/x86_64
-    ls -1 kamailio-*.apk |  xargs apk --no-cache --allow-untrusted add
+    doas chown -R build /usr/src/kamailio
+    make cfg
+    make -C pkg/kamailio apk
+    abuild -C pkg/kamailio/alpine -r
+    cd /home/build/packages/kamailio
+    ls -1 */kamailio-*.apk |  xargs doas apk --no-cache --allow-untrusted add
 }
 
 list_installed_kamailio_packages() {
