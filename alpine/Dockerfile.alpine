@@ -1,6 +1,10 @@
-FROM alpine:latest
+ARG IMAGE=alpine:latest
+FROM ${IMAGE}
 LABEL org.opencontainers.image.authors="Sergey Safarov <s.safarov@gmail.com>"
-RUN apk --no-cache upgrade
-ADD kamailio_min-without_os_files.tar.gz /
+
+RUN --mount=type=bind,source=.,target=/mnt set -eux; \
+    apkArch="$(apk --print-arch)"; \
+    apk --no-cache upgrade; \
+    tar xz -C / -f /mnt/${apkArch}/kamailio_img-without_os_files.tar.gz
 
 ENTRYPOINT ["kamailio", "-DD", "-E"]
