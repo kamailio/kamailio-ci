@@ -1,9 +1,15 @@
-FROM alpine:latest
+ARG IMAGE=alpine:latest
+ARG REPO=http://localhost
+ARG ARCH=x86_64
+FROM ${IMAGE}
+ARG REPO
+ARG ARCH
 LABEL org.opencontainers.image.authors="Sergey Safarov <s.safarov@gmail.com>"
+
 RUN apk --no-cache upgrade \
     && apk --no-cache add gawk ca-certificates gdb strace mariadb-client postgresql-client musl-dbg \
-    && apk --no-cache --allow-untrusted --repository http://local-repo search search -qe 'kamailio*' | \
-          xargs apk --no-cache --allow-untrusted --repository http://local-repo add \
+    && apk --no-cache --allow-untrusted --repository ${REPO}/${ARCH} search search -qe 'kamailio*' | \
+          xargs apk --no-cache --allow-untrusted --repository ${REPO}/${ARCH} add \
     && mkdir /var/lib/coredump \
     && echo "kernel.core_pattern=/var/lib/coredump/kamailio-core.%e.%p.%h.%t" > /etc/sysctl.d/00-core.conf
 
