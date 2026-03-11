@@ -1,15 +1,19 @@
-ARG IMAGE=alpine:latest
+ARG IMAGE=alpine:edge
 ARG REPO=http://localhost
 FROM ${IMAGE}
 ARG REPO
 LABEL org.opencontainers.image.authors="Sergey Safarov <s.safarov@gmail.com>"
 
-RUN set -eux; \
+RUN --mount=type=bind,source=apk_repo,target=/mnt set -eux; \
     apkArch="$(apk --print-arch)"; \
-    apk --no-cache upgrade; \
-    apk --no-cache add gawk ca-certificates gdb strace mariadb-client postgresql-client musl-dbg; \
-    apk --no-cache --allow-untrusted --repository ${REPO}/${apkArch} search search -qe 'kamailio*' | \
-        xargs apk --no-cache --allow-untrusted --repository ${REPO}/${apkArch} add; \
+    if grep -q edge /etc/os-release; then \
+        echo "https://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories; \
+    fi; \
+    apk update; \
+    apk upgrade; \
+    apk add gawk ca-certificates gdb strace mariadb-client postgresql-client musl-dbg; \
+    apk add --allow-untrusted /mnt/${apkArch}/*.apk; \
+    rm -Rf /var/cache/apk; \
     mkdir /var/lib/coredump; \
     echo "kernel.core_pattern=/var/lib/coredump/kamailio-core.%e.%p.%h.%t" > /etc/sysctl.d/00-core.conf
 
