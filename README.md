@@ -40,7 +40,7 @@ messaging and other applications.
 
 Before first run need to prepare kamailio default config files. If you already have kamailio config files, then you can skip this. To prepare default config files need to execute
 ```console
-docker create --name kamailio kamailio/kamailio-ci
+docker create --name kamailio ghcr.io/kamailio/kamailio-ci
 docker cp kamailio:/etc/kamailio /etc
 docker rm kamailio
 ```
